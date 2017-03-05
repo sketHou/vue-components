@@ -5,6 +5,7 @@
         </div>
         <div class="mr_date_picker_select" v-if="isShowSelect">
             <ul class="mr_date_picker_year">
+                <li v-if="showCurrent" @click="selectCurrent()" :class="{active: (value == '至今') && showCurrentActive}">至今</li>
                 <li v-for="year in yearRange" :class="{active: isYearActive(year), disabled: !isValidYear(year)}" v-text="year" @click="selectYear(year, $event)"></li>
             </ul>
             <ul class="mr_date_picker_month">
@@ -138,12 +139,17 @@
             },
             currentTime: {
                 type: String,
-                default: ''
+                default: function () {
+                    var date = new Date();
+                    var year = date.getFullYear();
+                    var month = date.getMonth() + 1;
+                    return year + '.' + month;
+                }
             },
             range: {
                 type: Array,
                 default: function () {
-                    return ['1991-01', '2017-12']
+                    return ['1991.01', '2017.12']
                 }
             },
             selectRange: {
@@ -151,12 +157,17 @@
                 default: function () {
                     return ['1991-01', '2017-12']
                 }
+            },
+            showCurrent: {
+                type: Boolean,
+                default: false
             }
 
         },
         data () {
             return {
                 isShowSelect: false,
+                showCurrentActive: true,
                 year: '',
                 month: ''
             }
@@ -209,8 +220,12 @@
             // },
             inputValue: function () {
                 var _this = this;
+                if (_this.value == '至今') {
+                    _this.showCurrentActive = true;
+                    return '至今';
+                }
                 if (!_this.month) {
-                    return ''
+                    return _this.value.replace() || ''
                 }
                 var month = _this.month < 10 ? month = '0' + parseInt(_this.month) : _this.month + '';
                 return _this.year + '.' + month;
@@ -238,8 +253,8 @@
             },
             selectRangeYear: function () {
                 var _this = this;
-                var startYear = parseInt(_this.$props.selectRange[0].split('-'));
-                var endYear = parseInt(_this.$props.selectRange[1].split('-'));
+                var startYear = parseInt(_this.$props.selectRange[0].split('.'));
+                var endYear = parseInt(_this.$props.selectRange[1].split('.'));
                 return [startYear, endYear]
             }
 
@@ -256,7 +271,7 @@
             },
             isValidMonth: function (val) {
                 var _this = this;
-                var _date = getTimeFromString(_this.year + '-' + val);
+                var _date = getTimeFromString(_this.year + '.' + val);
                 if ( (_date < _this.selectRangeTime[0]) || (_date > _this.selectRangeTime[1]) ) {
                     return false
                 }
@@ -287,8 +302,10 @@
                 if( className.indexOf('disabled') >= 0 ) { 
                     return;
                 }
+                _this.showCurrentActive = false;
                 _this.year = val;
                 _this.month = '';
+                _this.inputValue = '';
                 _this.$emit('select-year', _this.year);
             },
             selectMonth: function (val, event) {
@@ -301,6 +318,16 @@
                 _this.isShowSelect = false;
                 _this.$emit('select-month', _this.month);
                 _this.$emit('select', _this.year, _this.month);
+            },
+            selectCurrent: function () {
+                var _this = this;
+                _this.isShowSelect = false;
+                _this.showCurrentActive = true;
+                _this.year = '';
+                _this.month = '';
+                _this.$emit('select-year', _this.currentYear);
+                _this.$emit('select-month', _this.currentMonth);
+                _this.$emit('select', _this.currentYear, _this.currentMonth, '至今');
             }
         }
     }
@@ -333,7 +360,7 @@
      */
     function getDate (str) {
         var dateObj = {};
-        var arr = str.split('-');
+        var arr = str.split('.');
         dateObj.year = arr[0].replace(/\s/g, '');
         dateObj.month = arr[1].replace(/\s/g, '');
         if( parseInt(dateObj.month) < 10 ) {

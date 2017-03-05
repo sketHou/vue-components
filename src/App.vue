@@ -5,7 +5,8 @@
     <date-picker class="datepicker" 
                  :value = "value" 
                  :current-time = "currentTime"
-                 :select-range = "selectrange" 
+                 :select-range = "selectrange"
+                 :show-current = "true" 
                  @select-year = "selectYear"
                  @select-month = "selectMonth"
                  @select = "select"
@@ -25,9 +26,9 @@ export default {
   },
   data () {
     return {
-        value: '2016-9',
-        currentTime: '2017-3',
-        selectrange: ['2016-7','2017-8']
+        value: '2016.9',
+        currentTime: '2017.3',
+        selectrange: ['2016.7','2017.8']
     }
   },
   methods: {
@@ -37,12 +38,15 @@ export default {
     selectMonth: function (month) {
       console.log(month);
     },
-    select: function (year, month) {
-      console.log(year + '.' + month);
-      this.value = year + '-' + month
+    select: function (year, month, currentVal) {
+      if (currentVal) {
+        this.value = currentVal;
+        return;
+      }
+      this.value = year + '.' + (parseInt(month) < 10 ? '0' + month : month)
     },
     changeSelect: function () {
-      this.selectrange = ['2015-7','2017-8'];
+      this.selectrange = ['2015.7','2017.8'];
     }
   }
 }
