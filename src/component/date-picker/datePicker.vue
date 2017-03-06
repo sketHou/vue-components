@@ -174,8 +174,9 @@
         },
         mounted : function () {
             var _this = this;
-                if( _this.$props.value ) {
-                    var valueObj = getDate(_this.$props.value);
+            var props = _this.$props || _this;
+                if( props.value ) {
+                    var valueObj = getDate(props.value);
                     _this.year = valueObj.year;
                     _this.month = valueObj.month;
                 }else{
@@ -185,80 +186,67 @@
         computed: {
             currentYear: function () {
                 var _this = this;
-                if( _this.$props.currentTime ) {
-                    var valueObjCurrent = getDate(_this.$props.currentTime);
+                var props = _this.$props || _this;
+                if( props.currentTime ) {
+                    var valueObjCurrent = getDate(props.currentTime);
                     return valueObjCurrent.year;
-                    _this.currentMonth = valueObjCurrent.month;
                 }
                 return ''
             },
             currentMonth: function () {
                 var _this = this;
-                if( _this.$props.currentTime ) {
-                    var valueObjCurrent = getDate(_this.$props.currentTime);
+                var props = _this.$props || _this;
+                if( props.currentTime ) {
+                    var valueObjCurrent = getDate(props.currentTime);
                     return valueObjCurrent.month;
                 }
                 return ''
             },
-            // year: function () {
-            //     var _this = this;
-            //     if( _this.$props.value ) {
-            //         var valueObj = getDate(_this.$props.value);
-            //         return valueObj.year;
-            //     }else{
-            //         return _this.currentYear;
-            //     }
-            // },
-            // month: function () {
-            //     var _this = this;
-            //     if( _this.$props.value ) {
-            //         var valueObj = getDate(_this.$props.value);
-            //         return valueObj.month;
-            //     }else{
-            //         return ''
-            //     }
-            // },
             inputValue: function () {
                 var _this = this;
-                if (_this.value == '至今') {
+                var props = _this.$props || _this;
+                if (props.value == '至今') {
                     _this.showCurrentActive = true;
                     return '至今';
                 }
                 if (!_this.month) {
-                    return _this.value.replace() || ''
+                    return props.value.replace() || ''
                 }
                 var month = _this.month < 10 ? month = '0' + parseInt(_this.month) : _this.month + '';
                 return _this.year + '.' + month;
             },
             yearRange: function () {
                 var _this = this;
-                var startDateObj = getDate(_this.$props.range[0]);
-                var endDateObj = getDate(_this.$props.range[1]);
+                console.log(this);
+                var props = _this.$props || _this;
+                var startDateObj = getDate(props.range[0]);
+                var endDateObj = getDate(props.range[1]);
                 return getArray(endDateObj.year, startDateObj.year);
 
             },
             monthRange: function () {
                 var _this = this;
-                var startDateObj = getDate(_this.$props.range[0]);
-                var endDateObj = getDate(_this.$props.range[1]);
+                var props = _this.$props || _this;
+                var startDateObj = getDate(props.range[0]);
+                var endDateObj = getDate(props.range[1]);
                 return getArray(startDateObj.month, endDateObj.month);
             },
             selectRangeTime: function () {
                 var _this =this;
-                var selectStart = getTimeFromString(_this.$props.selectRange[0]);
-                var selectEnd = getTimeFromString(_this.$props.selectRange[1]);
-                var current = getTimeFromString(_this.$props.currentTime);
+                var props = _this.$props || _this;
+                var selectStart = getTimeFromString(props.selectRange[0]);
+                var selectEnd = getTimeFromString(props.selectRange[1]);
+                var current = getTimeFromString(props.currentTime);
                 selectEnd > current ? selectEnd = current : current;
                 return [selectStart, selectEnd];
             },
             selectRangeYear: function () {
                 var _this = this;
-                var startYear = parseInt(_this.$props.selectRange[0].split('.'));
-                var endYear = parseInt(_this.$props.selectRange[1].split('.'));
+                var props = _this.$props || _this;
+                var startYear = parseInt(props.selectRange[0].split('.'));
+                var endYear = parseInt(props.selectRange[1].split('.'));
                 return [startYear, endYear]
             }
-
-
         },
         methods: {
             isValidYear: function (val) {
@@ -279,6 +267,7 @@
             },
             isYearActive: function (val) {
                 var _this = this;
+                console.log(_this.year);
                 if (val == _this.year) {
                     return true
                 }
