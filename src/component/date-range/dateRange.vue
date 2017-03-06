@@ -77,7 +77,6 @@
         methods: {
             selectStart: function (year, month, currentVal) {
                 var _this = this;
-                _this.$children[1].showCurrent = false;
                 _this.$emit('select-start', year + '.' + (parseInt(month) < 10 ? '0' + month : month));
             },
             selectEnd: function (year, month, currentVal) {

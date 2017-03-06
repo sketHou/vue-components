@@ -180,7 +180,7 @@
             }
             document.addEventListener('click', function (e) {
                 e.preventDefault();
-                if(_this.$el.getElementsByClassName('mr_date_picker_input')[0] !== e.target) {
+                if (!contains(_this.$el, e.target)) {
                     _this.isShowSelect = false;
                 }
             });
@@ -325,6 +325,18 @@
             }
         }
         
+    }
+
+
+    function contains(root, el) {
+        if (root.compareDocumentPosition)
+            return root === el || !!(root.compareDocumentPosition(el) & 16);
+            if (root.contains && el.nodeType === 1){
+            return root.contains(el) && root !== el;
+        }
+        while ((el = el.parentNode))
+            if (el === root) return true;
+            return false;
     }
 
    /**
