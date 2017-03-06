@@ -11,6 +11,12 @@
                  @select-month = "selectMonth"
                  @select = "select"
     ></date-picker>
+    <p>
+      <span>可选区域： </span><span v-text="selectrange[0] + ' -- ' + selectrange[1] "></span>
+    </p>
+    <p>
+      <span>选择日期： </span><span v-text="value"></span>
+    </p>
     <button class="button" @click = "changeSelect()">改变可选区域</button>
   </div>
   
@@ -26,9 +32,9 @@ export default {
   },
   data () {
     return {
-        value: '2016.9',
+        value: '2016.09',
         currentTime: '2017.3',
-        selectrange: ['2016.7','2017.8']
+        selectrange: ['2016.7','2017.8'],
     }
   },
   methods: {
@@ -57,14 +63,16 @@ export default {
   margin: auto;
 }
 .button {
-  
   margin: 10px auto;
   padding: 5px;
-  border: 1px solid #333;
+  border: 1px solid #777;
   border-radius: 5px;
   overflow: hidden;
   background: #fff;
-  
+  cursor: pointer;
+}
+.button:hover {
+  background: #efefef;
 }
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
