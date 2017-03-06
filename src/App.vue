@@ -18,23 +18,34 @@
       <span>选择日期： </span><span v-text="value"></span>
     </p>
     <button class="button" @click = "changeSelect()">改变可选区域</button>
+    <h2>#DATERANGE</h2>
+    <date-range class="date-range" 
+        :start-date="startDate"
+        :end-date="endDate"
+        @select-start="selectStart"
+        @select-end="selectEnd">
+    </date-range>
   </div>
-  
 </template>
 
 <script>
 
 import datePicker from './component/date-picker/datePicker.vue'
+import dateRange from './component/date-range/dateRange.vue'
+
 export default {
   name: 'app',
   components: {
-    datePicker: datePicker
+    datePicker: datePicker,
+    dateRange: dateRange
   },
   data () {
     return {
         value: '2016.09',
         currentTime: '2017.3',
         selectrange: ['2016.7','2017.8'],
+        startDate: '2016.7',
+        endDate: '2017.1'
     }
   },
   methods: {
@@ -53,13 +64,29 @@ export default {
     },
     changeSelect: function () {
       this.selectrange = ['2015.7','2017.8'];
+    },
+    selectStart: function (val) {
+      console.log(val);
+      this.startDate = val;
+    },
+    selectEnd: function (val) {
+      console.log(val);
+      this.endDate = val;
     }
   }
 }
 </script>
 
 <style lang="less">
+h2 {
+  margin-top: 40px;
+  font-weight: bold;
+}
 .datepicker{
+  margin: auto;
+}
+.date-range {
+  width: 392px;
   margin: auto;
 }
 .button {

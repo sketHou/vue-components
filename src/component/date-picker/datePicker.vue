@@ -1,8 +1,6 @@
 <template>
     <div class="mr_date_picker">
-        <div class="mr_date_picker_input" @click="showSelect">
-            <span v-text="inputValue"></span>
-        </div>
+        <div class="mr_date_picker_input" @click="showSelect" v-text="inputValue"></div>
         <div class="mr_date_picker_select" v-if="isShowSelect">
             <ul class="mr_date_picker_year">
                 <li v-if="showCurrent" @click="selectCurrent()" :class="{active: (value == '至今') && showCurrentActive}">至今</li>
@@ -18,6 +16,18 @@
 </template>
 
 <style lang="less">
+    .mr_date_picker:before{
+        content: '';
+        position: absolute;
+        right: 18px;
+        top: 20px;
+        display: block;
+        height: 0;
+        width: 0;
+        font-size: 0;
+        border: 6px solid #fff;
+        border-color: #d3d3d3 transparent transparent;
+    }
     .mr_date_picker {
         position: relative;
         width: 190px;
@@ -34,21 +44,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            span {
-                padding-left: 17px;
-            }
-        }
-        .mr_date_picker_input :before{
-            content: '';
-            position: absolute;
-            right: 18px;
-            top: 20px;
-            display: block;
-            height: 0;
-            width: 0;
-            font-size: 0;
-            border: 6px solid #fff;
-            border-color: #d3d3d3 transparent transparent;
+            padding-left: 17px;
         }
         .mr_date_picker_select {
             position: absolute;
@@ -155,7 +151,7 @@
             selectRange: {
                 type: Array,
                 default: function () {
-                    return ['1991-01', '2017-12']
+                    return ['1991.01', '2017.12']
                 }
             },
             showCurrent: {
@@ -172,16 +168,22 @@
                 month: ''
             }
         },
-        mounted : function () {
+        mounted: function () {
             var _this = this;
             var props = _this.$props || _this;
-                if( props.value ) {
-                    var valueObj = getDate(props.value);
-                    _this.year = valueObj.year;
-                    _this.month = valueObj.month;
-                }else{
-                    _this.year = _this.currentYear;
+            if( props.value ) {
+                var valueObj = getDate(props.value);
+                _this.year = valueObj.year;
+                _this.month = valueObj.month;
+            }else{
+                _this.year = _this.currentYear;
+            }
+            document.addEventListener('click', function (e) {
+                e.preventDefault();
+                if(_this.$el.getElementsByClassName('mr_date_picker_input')[0] !== e.target) {
+                    _this.isShowSelect = false;
                 }
+            });
         },
         computed: {
             currentYear: function () {
@@ -217,7 +219,6 @@
             },
             yearRange: function () {
                 var _this = this;
-                console.log(this);
                 var props = _this.$props || _this;
                 var startDateObj = getDate(props.range[0]);
                 var endDateObj = getDate(props.range[1]);
@@ -267,7 +268,6 @@
             },
             isYearActive: function (val) {
                 var _this = this;
-                console.log(_this.year);
                 if (val == _this.year) {
                     return true
                 }
@@ -282,6 +282,7 @@
             },
             showSelect: function () {
                 var _this = this;
+                _this.$emit('click-input', _this)
                 _this.isShowSelect = !_this.isShowSelect;
 
             },
@@ -317,8 +318,13 @@
                 _this.$emit('select-year', _this.currentYear);
                 _this.$emit('select-month', _this.currentMonth);
                 _this.$emit('select', _this.currentYear, _this.currentMonth, '至今');
+            },
+            hideSelect: function () {
+                var _this = this;
+                _this.isShowSelect = false;
             }
         }
+        
     }
 
    /**
