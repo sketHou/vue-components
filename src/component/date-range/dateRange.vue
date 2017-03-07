@@ -38,7 +38,7 @@
             range: {
                 type: Array,
                 default: function () {
-                    return ['1991.1', '2017.12']
+                    return ['1991', '2017']
                 }
             },
             startDate: {

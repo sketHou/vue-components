@@ -145,7 +145,7 @@
             range: {
                 type: Array,
                 default: function () {
-                    return ['1992.01', '2017.12']
+                    return ['1991', '2017']
                 }
             },
             selectRange: {
@@ -165,7 +165,9 @@
                 isShowSelect: false,
                 showCurrentActive: true,
                 year: '',
-                month: ''
+                month: '',
+                monthRange: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+                
             }
         },
         mounted: function () {
@@ -220,17 +222,8 @@
             yearRange: function () {
                 var _this = this;
                 var props = _this.$props || _this;
-                var startDateObj = getDate(props.range[0]);
-                var endDateObj = getDate(props.range[1]);
-                return getArray(endDateObj.year, startDateObj.year);
+                return getArray(props.range[1], props.range[0]);
 
-            },
-            monthRange: function () {
-                var _this = this;
-                var props = _this.$props || _this;
-                var startDateObj = getDate(props.range[0]);
-                var endDateObj = getDate(props.range[1]);
-                return getArray(startDateObj.month, endDateObj.month);
             },
             selectRangeTime: function () {
                 var _this =this;

@@ -10,7 +10,7 @@
                  @select-year = "selectYear"
                  @select-month = "selectMonth"
                  @select = "select"
-                 :range = "['1995.1', '2017.12']"
+                 :range = "['1995', '2017']"
     ></date-picker>
     <p>
       <span>可选区域： </span><span v-text="selectrange[0] + ' -- ' + selectrange[1] "></span>
