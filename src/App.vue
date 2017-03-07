@@ -10,6 +10,7 @@
                  @select-year = "selectYear"
                  @select-month = "selectMonth"
                  @select = "select"
+                 :range = "['1995.1', '2017.12']"
     ></date-picker>
     <p>
       <span>可选区域： </span><span v-text="selectrange[0] + ' -- ' + selectrange[1] "></span>
@@ -23,7 +24,8 @@
         :start-date="startDate"
         :end-date="endDate"
         @select-start="selectStart"
-        @select-end="selectEnd">
+        @select-end="selectEnd"
+        :range = "['1994.1', '2017.12']">
     </date-range>
   </div>
 </template>
@@ -44,8 +46,8 @@ export default {
         value: '2016.09',
         currentTime: '2017.3',
         selectrange: ['2016.7','2017.8'],
-        startDate: '2016.7',
-        endDate: '2017.1'
+        startDate: '',
+        endDate: ''
     }
   },
   methods: {

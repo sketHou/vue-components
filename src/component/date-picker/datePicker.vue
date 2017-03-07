@@ -145,7 +145,7 @@
             range: {
                 type: Array,
                 default: function () {
-                    return ['1991.01', '2017.12']
+                    return ['1992.01', '2017.12']
                 }
             },
             selectRange: {
@@ -247,6 +247,14 @@
                 var startYear = parseInt(props.selectRange[0].split('.'));
                 var endYear = parseInt(props.selectRange[1].split('.'));
                 return [startYear, endYear]
+            }
+        },
+        watch: {
+            selectRangeYear: function (arr) {
+                var _this = this;
+                if (_this.year > arr[1]) {
+                    _this.year = arr[1]
+                }
             }
         },
         methods: {

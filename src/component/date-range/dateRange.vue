@@ -5,6 +5,7 @@
                 @select = "selectStart"
                 :current-time = "currentTime"
                 :select-range = "selectStartRange"
+                :range = "range"
         ></date-picker>
         <date-picker class="mr_date_range_pick"
                 :value="endDate"
@@ -12,6 +13,7 @@
                 :select-range = "selectEndRange"
                 :current-time = "currentTime"
                 @select = "selectEnd"
+                :range = "range"
         ></date-picker>
     </div>
     
@@ -33,6 +35,12 @@
             datePicker: datePicker
         },
         props: {
+            range: {
+                type: Array,
+                default: function () {
+                    return ['1991.1', '2017.12']
+                }
+            },
             startDate: {
                 type: String,
                 default: ''
@@ -86,15 +94,7 @@
                     return;
                 }
                 _this.$emit('select-end', year + '.' + (parseInt(month) < 10 ? '0' + month : month));
-            },
-            // change: function (el) {
-            //     var _this = this;
-            //     if (_this.$children[0]._uid == el._uid) {
-            //         _this.$children[1].hideSelect();
-            //     } else {
-            //         _this.$children[0].hideSelect();
-            //     }
-            // }
+            }
         }
     }
 </script>
