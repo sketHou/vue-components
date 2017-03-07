@@ -324,6 +324,18 @@
                 var _this = this;
                 _this.isShowSelect = false;
             }
+        },
+        directive: {
+            bind: function (el, binding, vnode) {
+                console.log(el);
+                console.log(binding);
+                console.log(vnode);
+            },
+            componentUpdated: function (el, binding, vnode) {
+                console.log(el);
+                console.log(binding);
+                console.log(vnode);
+            }
         }
         
     }

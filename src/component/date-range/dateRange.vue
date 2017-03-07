@@ -15,11 +15,15 @@
                 @select = "selectEnd"
                 :range = "range"
         ></date-picker>
+        <div class="clear"></div>
     </div>
     
 </template>
 
 <style lang="less">
+    .clear{
+        clear: both;
+    }
     .mr_date_range_pick{
         float: left;
     }

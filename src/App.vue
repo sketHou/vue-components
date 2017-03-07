@@ -27,6 +27,8 @@
         @select-end="selectEnd"
         :range = "['1994.1', '2017.12']">
     </date-range>
+    <h2>#SKILL-SLIDER</h2>
+    <skill-slide></skill-slide>
   </div>
 </template>
 
@@ -34,12 +36,14 @@
 
 import datePicker from './component/date-picker/datePicker.vue'
 import dateRange from './component/date-range/dateRange.vue'
+import skillSlide from './component/skill-slide/skillSlide.vue'
 
 export default {
   name: 'app',
   components: {
     datePicker: datePicker,
-    dateRange: dateRange
+    dateRange: dateRange,
+    skillSlide: skillSlide
   },
   data () {
     return {
@@ -47,7 +51,8 @@ export default {
         currentTime: '2017.3',
         selectrange: ['2016.7','2017.8'],
         startDate: '',
-        endDate: ''
+        endDate: '',
+        model: '2016.4'
     }
   },
   methods: {
