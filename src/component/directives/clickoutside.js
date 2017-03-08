@@ -1,6 +1,5 @@
 export default {
     bind (el, binding, vnode, oldVnode) {
-        console.log(el);
         el.documentHandler = function(e) {
             if (el.contains(e.target)) {
                 return false;
