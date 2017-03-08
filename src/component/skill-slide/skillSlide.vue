@@ -100,6 +100,8 @@
             onDragEnd: function (e) {
                 e.preventDefault();
                 this.dragging = false;
+                window.removeEventListener('mousemove', this.onDragging);
+                window.removeEventListener('mouseup', this.onDragEnd);
             },
             showNameEdit: function () {
                 var _this = this;

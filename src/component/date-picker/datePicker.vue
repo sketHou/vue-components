@@ -1,9 +1,9 @@
 <template>
-    <div class="mr_date_picker">
+    <div class="mr_date_picker" v-clickoutside="hideSelect">
         <div class="mr_date_picker_input" @click="showSelect" v-text="inputValue"></div>
         <div class="mr_date_picker_select" v-if="isShowSelect">
             <ul class="mr_date_picker_year">
-                <li v-if="showCurrent" @click="selectCurrent()" :class="{active: (value == '至今') && showCurrentActive}">至今</li>
+                <li v-if="showCurrent" @click="selectCurrent()" :class="{active: (date == '至今') && showCurrentActive}">至今</li>
                 <li v-for="year in yearRange" :class="{active: isYearActive(year), disabled: !isValidYear(year)}" v-text="year" @click="selectYear(year, $event)"></li>
             </ul>
             <ul class="mr_date_picker_month">
@@ -127,12 +127,16 @@
 </style>
 
 <script>
+    import {assignExpr} from '../util';
+    import clickoutside from '../directives/clickoutside';
+
     export default {
+        directives: { clickoutside },
         props: {
-            value: {
-                type: String,
-                default: ''
-            },
+            // value: {
+            //     type: String,
+            //     default: ''
+            // },
             currentTime: {
                 type: String,
                 default: function () {
@@ -166,26 +170,19 @@
                 showCurrentActive: true,
                 year: '',
                 month: '',
-                monthRange: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-                
+                monthRange: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                date: ''
             }
         },
         mounted: function () {
             var _this = this;
-            var props = _this.$props || _this;
-            if( props.value ) {
-                var valueObj = getDate(props.value);
+            if( _this.date ) {
+                var valueObj = getDate(_this.date);
                 _this.year = valueObj.year;
                 _this.month = valueObj.month;
             }else{
                 _this.year = _this.currentYear;
             }
-            document.addEventListener('click', function (e) {
-                e.preventDefault();
-                if (!contains(_this.$el, e.target)) {
-                    _this.isShowSelect = false;
-                }
-            });
         },
         computed: {
             currentYear: function () {
@@ -208,13 +205,12 @@
             },
             inputValue: function () {
                 var _this = this;
-                var props = _this.$props || _this;
-                if (props.value == '至今') {
+                if (_this.date == '至今') {
                     _this.showCurrentActive = true;
                     return '至今';
                 }
                 if (!_this.month) {
-                    return props.value.replace() || ''
+                    return _this.date.replace() || ''
                 }
                 var month = _this.month < 10 ? month = '0' + parseInt(_this.month) : _this.month + '';
                 return _this.year + '.' + month;
@@ -325,32 +321,31 @@
                 _this.isShowSelect = false;
             }
         },
-        directive: {
-            bind: function (el, binding, vnode) {
-                console.log(el);
-                console.log(binding);
-                console.log(vnode);
-            },
-            componentUpdated: function (el, binding, vnode) {
-                console.log(el);
-                console.log(binding);
-                console.log(vnode);
+        Directive: function () {
+            return {
+                date: {
+                    bind: function (el, binding, vnode) {
+                        vnode.child.date = binding.value;
+                        vnode.child.$on('select', function (year, month, currentVal) {
+                            var thisValue;
+                            if (currentVal) {
+                                thisValue = currentVal;
+                            } else {
+                                thisValue = year + '.' + (parseInt(month) < 10 ? '0' + month : month);
+                            }   
+                            // vnode.context.date = thisValue; 
+                            assignExpr(binding.expression, vnode.context, thisValue);              
+                        })
+                    },
+                    componentUpdated: function (el, binding, vnode) {
+                        vnode.child.date = binding.value;
+                    }
+                }
             }
         }
-        
     }
 
 
-    function contains(root, el) {
-        if (root.compareDocumentPosition)
-            return root === el || !!(root.compareDocumentPosition(el) & 16);
-            if (root.contains && el.nodeType === 1){
-            return root.contains(el) && root !== el;
-        }
-        while ((el = el.parentNode))
-            if (el === root) return true;
-            return false;
-    }
 
    /**
     * 
