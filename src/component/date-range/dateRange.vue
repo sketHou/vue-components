@@ -1,14 +1,14 @@
 <template>
     <div class="mr_date_range">
         <date-picker class="mr_date_range_pick" 
-                :value="startDate"
+                v-date="thisStartDate"
                 @select = "selectStart"
                 :current-time = "currentTime"
                 :select-range = "selectStartRange"
                 :range = "range"
         ></date-picker>
         <date-picker class="mr_date_range_pick"
-                :value="endDate"
+                v-date="thisEndDate"
                 :show-current = "true"
                 :select-range = "selectEndRange"
                 :current-time = "currentTime"
@@ -33,8 +33,10 @@
 </style>
 
 <script>
-    import datePicker from '../date-picker/datePicker.vue'
+    import datePicker from '../date-picker/datePicker.vue';
+    var directives = datePicker.Directive()
     export default {
+        directives: directives,
         components: {
             datePicker: datePicker
         },
@@ -65,39 +67,41 @@
         },
         data: function () {
             return {
+                thisStartDate: this.endDate,
+                thisEndDate: this.endDate
             }
         },
         computed: {
             selectEndRange: function () {
                 var _this = this;
-                if (_this.startDate) {
-                    return [_this.startDate, _this.currentTime]
+                if (_this.thisStartDate) {
+                    return [_this.thisStartDate, _this.currentTime]
                 }
                 return ['1991.01', _this.currentTime]                
             },
             selectStartRange: function () {
                 var _this = this;
-                if (_this.endDate == '至今') {
+                if (_this.thisEndDate == '至今') {
                     return ['1991.01', _this.currentTime]
                 }
-                if (_this.endDate) {
-                    return ['1991.01', _this.endDate]
+                if (_this.thisEndDate) {
+                    return ['1991.01', _this.thisEndDate]
                 }
                 return ['1991.01', _this.currentTime]    
             }
         },
         methods: {
             selectStart: function (year, month, currentVal) {
-                var _this = this;
-                _this.$emit('select-start', year + '.' + (parseInt(month) < 10 ? '0' + month : month));
+                // var _this = this;
+                // _this.$emit('select-start', year + '.' + (parseInt(month) < 10 ? '0' + month : month));
             },
             selectEnd: function (year, month, currentVal) {
-                var _this = this;
-                if (currentVal) {
-                    _this.$emit('select-end', currentVal);
-                    return;
-                }
-                _this.$emit('select-end', year + '.' + (parseInt(month) < 10 ? '0' + month : month));
+                // var _this = this;
+                // if (currentVal) {
+                //     _this.$emit('select-end', currentVal);
+                //     return;
+                // }
+                // _this.$emit('select-end', year + '.' + (parseInt(month) < 10 ? '0' + month : month));
             }
         }
     }

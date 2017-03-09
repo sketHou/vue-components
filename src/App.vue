@@ -4,7 +4,7 @@
 
 		<h2>#DATEPICKER</h2>
 		<date-picker class="datepicker" 
-				v-date = "'2017.1'" 
+				v-date = "date" 
 				:current-time = "currentTime"
 				:select-range = "selectrange"
 				:show-current = "true" 
