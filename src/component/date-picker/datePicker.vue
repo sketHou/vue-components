@@ -176,6 +176,11 @@
         },
         mounted: function () {
             var _this = this;
+            if (_this.date == '至今') {
+                _this.year = _this.currentYear;
+                _this.showCurrentActive = true;
+                return;
+            }
             if( _this.date ) {
                 var valueObj = getDate(_this.date);
                 _this.year = valueObj.year;
@@ -205,6 +210,7 @@
             },
             inputValue: function () {
                 var _this = this;
+                console.log('date: ' +  _this.date);
                 if (_this.date == '至今') {
                     _this.showCurrentActive = true;
                     return '至今';
@@ -265,6 +271,9 @@
             },
             isYearActive: function (val) {
                 var _this = this;
+                if (_this.showCurrentActive) {
+                    return false;
+                }
                 if (val == _this.year) {
                     return true
                 }
@@ -310,7 +319,7 @@
                 var _this = this;
                 _this.isShowSelect = false;
                 _this.showCurrentActive = true;
-                _this.year = '';
+                _this.year = _this.currentYear;
                 _this.month = '';
                 _this.$emit('select-year', _this.currentYear);
                 _this.$emit('select-month', _this.currentMonth);
@@ -333,8 +342,7 @@
                             } else {
                                 thisValue = year + '.' + (parseInt(month) < 10 ? '0' + month : month);
                             }   
-                            // vnode.context.date = thisValue; 
-                            assignExpr(binding.expression, vnode.context, thisValue);              
+                            assignExpr(binding.expression, vnode.context, thisValue);          
                         })
                     },
                     componentUpdated: function (el, binding, vnode) {
