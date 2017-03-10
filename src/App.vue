@@ -139,7 +139,7 @@ export default {
 				//json = result;
 				//result的key由参数中的type决定：1-POSITION，2-COMPANY,3-COLLEGE,4-MAJOR,5-EXPECT_JOB。json的value是一个数组，数组的每个元素是一个对象，该对象有两个成员：cont和hotness，cont就是suggestion的内容，hotness表示热度
 				if (result) {
-					vm.list = result.COMPANY;
+					vm.setList(result.COMPANY);
 				}
 			});
 		}

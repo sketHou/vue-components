@@ -93,6 +93,9 @@
             },
             hideSelect: function () {
                 this.list = [];
+            },
+            setList: function (list) {
+                this.list = list;
             }
          }
      }
