@@ -135,7 +135,7 @@
             },
             skillPercent: function (val) {
                 this.masterLevel = getMasterLevel(val);
-                this.$emit('change-skill-percent', val);
+                this.$emit('change-skill-percent', parseInt(val));
                 this.$emit('change-skill-masterlevel', this.masterLevel);
             }
         },
