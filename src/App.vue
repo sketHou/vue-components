@@ -44,6 +44,12 @@
 			<span>掌握程度： </span><span v-text="skill.masterLevel + ' (' + skill.percent + '%)'"></span>
 		</p>
 
+		<h2>#SELECT-INPUT</h2>
+		<select-input class="select-input"
+				:input-val = "'chan'"
+				:namekey = "'cont'"
+				@select="selectInput"
+				@fetch-data="fetchData"></select-input>
 	</div>
 </template>
 
@@ -52,6 +58,8 @@
 import datePicker from './component/date-picker/datePicker.vue'
 import dateRange from './component/date-range/dateRange.vue'
 import skillSlide from './component/skill-slide/skillSlide.vue'
+import selectInput from './component/select-input/selectInput.vue'
+import $ from 'jquery'
 
 var directives = Object.assign(skillSlide.Directive(), datePicker.Directive(), dateRange.Directive());
 // Object.assign()
@@ -62,7 +70,8 @@ export default {
 	components: {
 		datePicker: datePicker,
 		dateRange: dateRange,
-		skillSlide: skillSlide
+		skillSlide: skillSlide,
+		selectInput: selectInput
 	},
 	data () {
 		return {
@@ -110,12 +119,38 @@ export default {
 		},
 		deleteSkill: function (skillcom) {
 			// console.log(skillcom);
+		},
+		selectInput: function (val) {
+			// console.log(val);
+		},
+		fetchData: function (val, vm) {
+			$.ajax({
+				type: 'POST',
+				async: false,
+				url: 'https://suggest.lagou.com' + '/suggestion',
+				dataType: "jsonp",
+				jsonp: "suggestCompanyback",
+				data : {
+					input: val, //用户的原始输入
+					type: 2, //1-职位，2-公司，3-学校，4-专业，5-期望职位
+					num: 6 //最多希望获取多少suggestion。不能大于30
+				}
+			}).done(function(result){
+				//json = result;
+				//result的key由参数中的type决定：1-POSITION，2-COMPANY,3-COLLEGE,4-MAJOR,5-EXPECT_JOB。json的value是一个数组，数组的每个元素是一个对象，该对象有两个成员：cont和hotness，cont就是suggestion的内容，hotness表示热度
+				if (result) {
+					vm.list = result.COMPANY;
+				}
+			});
 		}
 	}
 }
 </script>
 
 <style lang="less">
+	.select-input {
+		margin: auto;
+	}
 	.skill_slider {
 	margin: auto;
 	width: 569px;
