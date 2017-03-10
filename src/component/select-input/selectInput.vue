@@ -63,7 +63,7 @@
              },
              namekey: {
                  type: String,
-                 default: ''
+                 required: true
              }
          },
          created: function () {
