@@ -23,8 +23,8 @@
 
 		<h2>#DATERANGE</h2>
 		<date-range class="date-range" 
-				:start-date="startDate"
-				:end-date="endDate"
+				v-start-date="startDate"
+				v-end-date="endDate"
 				@select-start="selectStart"
 				@select-end="selectEnd"
 				:range = "['1994.1', '2017.12']">
@@ -53,7 +53,7 @@ import datePicker from './component/date-picker/datePicker.vue'
 import dateRange from './component/date-range/dateRange.vue'
 import skillSlide from './component/skill-slide/skillSlide.vue'
 
-var directives = Object.assign(skillSlide.Directive(), datePicker.Directive());
+var directives = Object.assign(skillSlide.Directive(), datePicker.Directive(), dateRange.Directive());
 // Object.assign()
 
 export default {
@@ -69,8 +69,8 @@ export default {
 			date: '2016.09',
 			currentTime: '2017.3',
 			selectrange: ['2016.7','2017.8'],
-			startDate: '',
-			endDate: '',
+			startDate: '2016.11',
+			endDate: '2017.01',
 			skill: {
 				skillName: 'html',
 				percent: 22,
@@ -106,10 +106,10 @@ export default {
 		},
 		selectEnd: function (val) {
 			console.log(val);
-			this.endDate = val;
+			// this.endDate = val;
 		},
 		deleteSkill: function (skillcom) {
-			console.log(skillcom);
+			// console.log(skillcom);
 		}
 	}
 }

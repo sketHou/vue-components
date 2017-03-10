@@ -133,10 +133,6 @@
     export default {
         directives: { clickoutside },
         props: {
-            // value: {
-            //     type: String,
-            //     default: ''
-            // },
             currentTime: {
                 type: String,
                 default: function () {
@@ -167,15 +163,16 @@
         data () {
             return {
                 isShowSelect: false,
-                showCurrentActive: true,
+                showCurrentActive: false,
                 year: '',
                 month: '',
                 monthRange: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
                 date: ''
             }
         },
-        mounted: function () {
-            var _this = this;
+        created: function () {
+           
+            var _this = this;//如果date是 daterange 传过来的 那么在mounted时 date值为空
             if (_this.date == '至今') {
                 _this.year = _this.currentYear;
                 _this.showCurrentActive = true;
@@ -210,7 +207,6 @@
             },
             inputValue: function () {
                 var _this = this;
-                console.log('date: ' +  _this.date);
                 if (_this.date == '至今') {
                     _this.showCurrentActive = true;
                     return '至今';
@@ -330,13 +326,13 @@
                 _this.isShowSelect = false;
             }
         },
-        Directive: function () {
+        Directive: function () { // mounted 之后绑定
             return {
                 date: {
                     bind: function (el, binding, vnode) {
                         vnode.child.date = binding.value;
                         vnode.child.$on('select', function (year, month, currentVal) {
-                            var thisValue;
+                            var thisValue; 
                             if (currentVal) {
                                 thisValue = currentVal;
                             } else {
@@ -347,6 +343,20 @@
                     },
                     componentUpdated: function (el, binding, vnode) {
                         vnode.child.date = binding.value;
+                        
+                        var _this = vnode.child;
+                        if (_this.date == '至今') {
+                            _this.year = _this.currentYear;
+                            _this.showCurrentActive = true;
+                            return;
+                        }
+                        if( _this.date ) {
+                            var valueObj = getDate(_this.date);
+                            _this.year = valueObj.year;
+                            _this.month = valueObj.month;
+                        }else{
+                            _this.year = _this.currentYear;
+                        }
                     }
                 }
             }

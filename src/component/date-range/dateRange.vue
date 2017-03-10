@@ -67,7 +67,7 @@
         },
         data: function () {
             return {
-                thisStartDate: this.endDate,
+                thisStartDate: this.startDate,
                 thisEndDate: this.endDate
             }
         },
@@ -102,6 +102,44 @@
                 //     return;
                 // }
                 // _this.$emit('select-end', year + '.' + (parseInt(month) < 10 ? '0' + month : month));
+            }
+        },
+        Directive: function () {
+            return {
+                startDate: {
+                    bind: function (el, binding, vnode) {
+                        vnode.child.thisStartDate = binding.value;
+                        vnode.child.$on('select-start', function (year, month, currentVal) {
+                            var thisValue;
+                            if (currentVal) {
+                                thisValue = currentVal;
+                            } else {
+                                thisValue = year + '.' + (parseInt(month) < 10 ? '0' + month : month);
+                            }   
+                            assignExpr(binding.expression, vnode.context, thisValue);          
+                        })
+                    },
+                    componentUpdated: function (el, binding, vnode) {
+                        vnode.child.thisStartDate = binding.value;
+                    }                    
+                },
+                endDate: {
+                    bind: function (el, binding, vnode) {
+                        vnode.child.thisEndDate = binding.value;
+                        vnode.child.$on('select-end', function (year, month, currentVal) {
+                            var thisValue;
+                            if (currentVal) {
+                                thisValue = currentVal;
+                            } else {
+                                thisValue = year + '.' + (parseInt(month) < 10 ? '0' + month : month);
+                            }   
+                            assignExpr(binding.expression, vnode.context, thisValue);          
+                        })
+                    },
+                    componentUpdated: function (el, binding, vnode) {
+                        vnode.child.thisEndDate = binding.value;
+                    }                    
+                }
             }
         }
     }
