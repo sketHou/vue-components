@@ -50,6 +50,14 @@
 				:namekey = "'cont'"
 				@select="selectInput"
 				@fetch-data="fetchData"></select-input>
+		
+		<h2>#EDIT-AREA</h2>
+		<edit-area :name="'工作经历'" :tips="'添加工作经历'">
+			<div slot="editlist">
+				<div v-for="data in workList" v-text="data"></div>
+			</div>
+		</edit-area>
+		<binding :data="data" v-model="num"></binding>
 	</div>
 </template>
 
@@ -59,6 +67,8 @@ import datePicker from './component/date-picker/datePicker.vue'
 import dateRange from './component/date-range/dateRange.vue'
 import skillSlide from './component/skill-slide/skillSlide.vue'
 import selectInput from './component/select-input/selectInput.vue'
+import editArea from './component/edit-area/editArea.vue'
+import binding from './component/binding/binding.vue'
 import $ from 'jquery'
 
 var directives = Object.assign(skillSlide.Directive(), datePicker.Directive(), dateRange.Directive());
@@ -71,7 +81,9 @@ export default {
 		datePicker: datePicker,
 		dateRange: dateRange,
 		skillSlide: skillSlide,
-		selectInput: selectInput
+		selectInput: selectInput,
+		editArea: editArea,
+		binding: binding
 	},
 	data () {
 		return {
@@ -84,10 +96,21 @@ export default {
 				skillName: 'html',
 				percent: 22,
 				masterLevel: '熟悉'
-			}
+			},
+			workList: [1,2,3],
+			data: {
+				val: 1
+			},
+			num: 1
 		}
 	},
 	watch: {
+		data: function (obj) {
+			console.log(obj.val);
+		},
+		num: function (val) {
+			console.log(this.num);
+		}
 	},
 	methods: {
 		selectYear: function (year) {
@@ -148,6 +171,9 @@ export default {
 </script>
 
 <style lang="less">
+	#app {
+		margin-bottom: 200px;
+	}
 	.select-input {
 		margin: auto;
 	}
