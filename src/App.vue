@@ -57,6 +57,9 @@
 				<div v-for="data in workList" v-text="data"></div>
 			</div>
 		</edit-area>
+		<h2>#COMPONENT COMMUNICATION</h2>
+		<h3>##v-model</h3>
+		<h2>dddd</h2>
 		<binding :data="data" v-model="num"></binding>
 	</div>
 </template>
