@@ -58,9 +58,12 @@
 				<div v-for="data in workList" v-text="data"></div>
 			</div>
 		</edit-area>
+<<<<<<< HEAD
 		<h2>#COMPONENT COMMUNICATION</h2>
 		<h3>##v-model</h3>
 		<h2>dddd</h2>
+=======
+>>>>>>> parent of b796756... commit
 		<binding :data="data" v-model="num"></binding>
 =======
 >>>>>>> parent of 3708ad7... 双向绑定的实验
