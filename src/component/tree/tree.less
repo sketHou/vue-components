@@ -1,0 +1,28 @@
+.tree__main {
+	text-align: left;
+	display: block;
+}
+
+.tree__trunk {
+	text-align: left;
+	padding-left: 40px;
+	display: block;
+}
+
+.tree__row {
+    width: 100px;
+	padding: 5px;
+	text-align: left;
+	border-radius: 10px;
+	cursor: pointer;
+	&:hover {
+		background: #efefef;
+	}
+}
+
+.tree__trunk .tree__main {
+	display: none;
+}
+.tree__trunk.expanded > .tree__main {
+	display: block;
+}
